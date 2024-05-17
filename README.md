@@ -16,8 +16,15 @@ If you require a refresher on Git I recommend this tutorial from W3Schools - [Gi
 
 1. Clone this project from GitHub with the command `git clone git@github.com:Varsilias/niyogroup.git`
 2. Create a `.env` file that follows the blueprint of the `.env.example` file located at the root of the project directory by running the command `npm run copy:env` or `yarn copy:env`
-3. Fill the `.env` file with the necessary credentials, you can decide how strict or flexible the values you provide will be
+3. Fill the `.env` file with the rest of the necessary credentials
 4. Install the project dependencies by running the command `npm install` or `yarn install`
 5. Run the command `docker compose up` to start up the **Database**, **Adminer - a tool to visualize the data in the database**, and the Local Development Server
    **NB:** The command in **Step 5** would take a considerable amount of time when it is run for the first time, this time will reduce drastically when run subsequently
-6. Relax and Sip some coffee while you got through the code
+   **NB** If you add an additional dependency to the core project, you have restart the local development server. Run the command `docker compose down` to stop all the containers and `docker compose up --build` to start the project
+6. Relax and Sip some coffee while you go through the code
+
+**Working With Mirgations**
+When you move to production you definitely should set the `DB_SYNC` environment variable to **false**. This is to prevent unexpected changes to be automatically applied to your production database which could potentially lead to loss of data. In a case like this, you can use migrations to apply changes to the database.
+This project provides up to four commands to use in generating and running migrations
+
+1.
