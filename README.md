@@ -27,4 +27,7 @@ If you require a refresher on Git I recommend this tutorial from W3Schools - [Gi
 When you move to production you definitely should set the `DB_SYNC` environment variable to **false**. This is to prevent unexpected changes to be automatically applied to your production database which could potentially lead to loss of data. In a case like this, you can use migrations to apply changes to the database.
 This project provides up to four commands to use in generating and running migrations
 
-1.
+1. `npm run migration:create --name=<NameOfFile>` to create a new empty migration file like this: **NameOfFile[timestamp]** where [timestamp] is the current time when the file was generated in milliseconds. The generated file includes an `up` and `down` method. the _up_ method apply changes to the database and the _down_ method rollback previously applied changes
+2. `npm run migration:generate --name=<NameOfFile>` to generate a migration file based on existing Entity files. It compares current snapshots of the entities to previous snapshots of the same entities and generates corresponding `ALTER` statements to apply specific changes to the tables
+3. `npm run migration:revert` to revert any migration file create by the `migration:create` and `migration:generate` command
+4. `npm run migration:run` to run any migration that have not been previously applied.

@@ -21,6 +21,8 @@ const envConfigSchema = z.object({
   DB_NAME: z.string(),
   JWT_ACCESS_TOKEN_SECRET: z.string(),
   JWT_REFRESH_TOKEN_SECRET: z.string(),
+  JWT_ACCESS_TOKEN_EXPIRY: z.string(),
+  JWT_REFRESH_TOKEN_EXPIRY: z.string(),
   DB_URL: z.string(),
   DB_SYNC: z.string(),
   DB_HOST: z.string(),
@@ -37,6 +39,8 @@ interface IEnvConfig {
   DB_NAME: string;
   JWT_ACCESS_TOKEN_SECRET: string;
   JWT_REFRESH_TOKEN_SECRET: string;
+  JWT_ACCESS_TOKEN_EXPIRY: string;
+  JWT_REFRESH_TOKEN_EXPIRY: string;
   DB_ROOT_PASSWORD: string;
   DB_USER: string;
   DB_URL: string;
@@ -116,8 +120,16 @@ export class ConfigService {
     return this.config.JWT_ACCESS_TOKEN_SECRET;
   }
 
+  get JWT_ACCESS_TOKEN_EXPIRY(): string {
+    return this.config.JWT_ACCESS_TOKEN_EXPIRY;
+  }
+
   get JWT_REFRESH_TOKEN_SECRET(): string {
     return this.config.JWT_REFRESH_TOKEN_SECRET;
+  }
+
+  get JWT_REFRESH_TOKEN_EXPIRY(): string {
+    return this.config.JWT_REFRESH_TOKEN_EXPIRY;
   }
 
   get DB_SYNC() {

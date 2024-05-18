@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { ConfigService } from './config/config.service';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { TransformInterceptor } from './common/interceptors/response-transform.interceptor';
-import { ParamValidationPipe } from './pipes/param-validation.pipe';
+import { ParamValidationPipe } from './common/pipes/param-validation.pipe';
 import { CustomExceptionFilter } from './common/filters/custom-exception.filter';
 
 async function bootstrap() {

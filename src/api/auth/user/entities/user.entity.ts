@@ -17,12 +17,16 @@ export class UserEntity extends BaseEntity<UserEntity> {
   @Exclude()
   password: string;
 
+  @Column({ type: 'varchar' })
+  @Exclude()
+  salt: string;
+
   @Column({ default: false })
-  emailConfirmed: boolean;
+  emailConfirmed?: boolean;
 
   @Column({ length: 16, nullable: true })
   @Exclude()
-  securityToken: string;
+  securityToken?: string;
 
   // When the user registered / requested email change
   @Column({
@@ -30,5 +34,5 @@ export class UserEntity extends BaseEntity<UserEntity> {
     nullable: true,
   })
   @Exclude()
-  securityTokenRequestedAt: Date;
+  securityTokenRequestedAt?: Date;
 }
