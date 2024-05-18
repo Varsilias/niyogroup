@@ -1,13 +1,11 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AuthService } from '../service/auth.service';
-import { SignUpDto } from '../dtos';
-import { SignInDto } from '../dtos/sign-in.dto';
+import { SignUpDto, SignInDto, RefreshTokenDto } from '../dtos';
 import { Public } from '../../../common/decorators/public-request.decorator';
 import {
   CurrentUser,
   IDecoratorUser,
 } from 'src/common/decorators/current-user.decorator';
-import { RefreshTokenDto } from '../dtos/refresh-token.dto';
 
 @Controller('auth')
 export class AuthController {

@@ -1,7 +1,11 @@
 import { BaseEntity } from '../../../../common/entities/base-entity';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { Exclude } from 'class-transformer';
+import { TaskEntity } from 'src/api/tasks/entities/task.entity';
 
+/* 
+  This class handles the creation of the "USERS" table
+*/
 @Entity({ name: 'users' })
 export class UserEntity extends BaseEntity<UserEntity> {
   @Column({ type: 'varchar' })
@@ -35,4 +39,7 @@ export class UserEntity extends BaseEntity<UserEntity> {
   })
   @Exclude()
   securityTokenRequestedAt?: Date;
+
+  @OneToMany(() => TaskEntity, (tasks) => tasks.user)
+  tasks: TaskEntity[];
 }
