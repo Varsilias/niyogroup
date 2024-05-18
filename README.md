@@ -22,7 +22,9 @@ If you require a refresher on Git I recommend this tutorial from W3Schools - [Gi
 
 **NB:** The command in **Step 5** would take a considerable amount of time when it is run for the first time, this time will reduce drastically when run subsequently
 
-**NB** If you add an additional dependency to the core project, you have restart the local development server. Run the command `docker compose down` to stop all the containers and `docker compose up --build` to start the project 6. Relax and Sip some coffee while you go through the code
+**NB** If you add an additional dependency to the core project, you have restart the local development server. Run the command `docker compose down` to stop all the containers and `docker compose up --build` to start the project
+
+6. Relax and Sip some coffee while you go through the code
 
 **Working With Mirgations**
 When you move to production you definitely should set the `DB_SYNC` environment variable to **false**. This is to prevent unexpected changes to be automatically applied to your production database which could potentially lead to loss of data. In a case like this, you can use migrations to apply changes to the database.
