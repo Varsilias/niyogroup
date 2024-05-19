@@ -7,7 +7,7 @@ export class NotFoundException extends CustomException {
     data: Record<string, any> | Array<string> | Array<Record<string, any>>,
     err?: any,
     code?: number,
-    status: number = HttpStatus.BAD_REQUEST,
+    status: number = HttpStatus.NOT_FOUND,
   ) {
     super(err, code, status, message, data);
   }

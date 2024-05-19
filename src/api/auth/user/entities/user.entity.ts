@@ -1,7 +1,7 @@
 import { BaseEntity } from '../../../../common/entities/base-entity';
 import { Column, Entity, OneToMany } from 'typeorm';
 import { Exclude } from 'class-transformer';
-import { TaskEntity } from 'src/api/tasks/entities/task.entity';
+import { TaskEntity } from '../../../tasks/entities/task.entity';
 
 /* 
   This class handles the creation of the "USERS" table

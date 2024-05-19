@@ -21,7 +21,11 @@ export class TaskService {
     return task;
   }
 
-  async findAll(user: IDecoratorUser, page: string, perPage: string) {
+  async findAll(
+    user: IDecoratorUser,
+    page: string | number,
+    perPage: string | number,
+  ) {
     const data = await this.taskRepository.getTasksForUser(user);
     return paginateResponse(data, page, perPage);
   }

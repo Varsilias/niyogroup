@@ -6,10 +6,10 @@ import * as crypto from 'crypto';
 import { comparePassword, hashPassword } from '../../../common/utils';
 import { ServerErrorException } from '../../../common/exceptions/server-error.exception';
 import { SignInDto } from '../dtos/sign-in.dto';
-import { BadRequestException } from 'src/common/exceptions/bad-request.exception';
+import { BadRequestException } from '../../../common/exceptions/bad-request.exception';
 import { JwtService, JsonWebTokenError, TokenExpiredError } from '@nestjs/jwt';
-import { ConfigService } from 'src/config/config.service';
-import { NotFoundException } from 'src/common/exceptions/notfound.exception';
+import { ConfigService } from '../../../config/config.service';
+import { NotFoundException } from '../../../common/exceptions/notfound.exception';
 import { RefreshTokenDto } from '../dtos/refresh-token.dto';
 
 @Injectable()
@@ -140,6 +140,13 @@ export class AuthService {
 
       if (error instanceof TokenExpiredError) {
         throw new BadRequestException(error?.message ?? 'Token Expired', null);
+      }
+
+      if (
+        error instanceof NotFoundException ||
+        error instanceof BadRequestException
+      ) {
+        throw error;
       }
 
       throw new ServerErrorException(
