@@ -33,7 +33,7 @@ If you require a refresher on Git I recommend this tutorial from W3Schools - [Gi
 
 **NB:** The value for the rest of the input field come from your `.env`. DB_USER value for the Username field, DB_NAME for the Database field, DB_PASSWORD for the Password field
 
-![Adminer Login Screen](https://github.com/Varsilias/niyogroup/adminer.png)
+![Adminer Login Screen](https://github.com/Varsilias/niyogroup/blob/main/adminer.png)
 
 9. Relax and Sip some coffee while you go through the code
 
@@ -48,7 +48,7 @@ This project provides up to four commands to use in generating and running migra
 
 #### Data Model
 
-![Niyo Group Assessment Data Model](https://github.com/Varsilias/niyogroup/niyogroup.png)
+![Niyo Group Assessment Data Model](https://github.com/Varsilias/niyogroup/blob/main/niyogroup.png)
 
 #### API Endpoint Documentation
 
