@@ -20,6 +20,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "copy:env:unix": "chmod +x copy-env.js && ./copy-env.js",
     "copy:env": "node copy-env.js",
+    "kill:ports": "chmod +x kill_ports.sh && ./kill_ports.sh",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
     "migration:generate": "npm run typeorm migration:generate -- -d src/database/config/orm.config.ts src/database/migrations/$npm_config_name",
     "migration:revert": "npm run typeorm migration:revert -- -d src/database/config/orm.config.ts",

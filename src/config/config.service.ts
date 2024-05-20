@@ -25,7 +25,7 @@ const envConfigSchema = z.object({
   JWT_REFRESH_TOKEN_EXPIRY: z.string(),
   DB_URL: z.string(),
   DB_SYNC: z.string(),
-  DB_HOST: z.string(),
+  DB_HOST: z.string().default('localhost'),
   DB_TYPE: z.string(),
 });
 
