@@ -53,3 +53,10 @@ This project provides up to four commands to use in generating and running migra
 #### API Endpoint Documentation
 
 [Link to Postman Documentation Page](https://documenter.getpostman.com/view/10967402/2sA3QmEEvw#a0cdf10f-e65f-4691-a234-45c08c65d693)
+
+#### WebSocket Setup
+
+1. Run the command `npm run start:socket` to start the test websocket client
+
+When a new task is created on the server, an event `task/new` is emitted to the client which it listens to, the event is emitted alongside the newly created task.
+The new task is automatically appended to the html page alongside previously sent tasks. You can test this out by sending a **HTTP request** to create a new task from any **HTTP Client** of your choice **E.G Postman** go back to the HTML page rendered when you ran the command in **step 1** and you will see the new task appended to the page in real-time

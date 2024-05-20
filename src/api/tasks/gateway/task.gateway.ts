@@ -11,7 +11,7 @@ import { TaskEntity } from '../entities/task.entity';
 import { WsJwtGuard } from '../../auth/guards/ws-jwt.guard';
 import { AuthService } from '../../auth/service/auth.service';
 
-@WebSocketGateway()
+@WebSocketGateway({ cors: { origin: '*' } })
 @Injectable()
 @UseGuards(WsJwtGuard)
 export class TaskGateway implements OnModuleInit, OnGatewayInit {
