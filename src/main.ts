@@ -13,7 +13,7 @@ async function bootstrap() {
   const reflector = app.get(Reflector);
 
   app.setGlobalPrefix('/api/v1');
-  app.enableCors();
+  app.enableCors(); // if this was a production app we will allow only known domains, like our frontend app url
   app.useGlobalPipes(new ParamValidationPipe());
   app.useGlobalPipes(
     new ValidationPipe({ transform: true, stopAtFirstError: true }),

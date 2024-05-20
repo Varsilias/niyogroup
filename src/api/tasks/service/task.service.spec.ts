@@ -9,6 +9,7 @@ import { NotFoundException } from '../../../common/exceptions/notfound.exception
 import { UpdateTaskDto } from '../dtos/update-task.dto';
 import { ServerErrorException } from '../../../common/exceptions/server-error.exception';
 import { TaskStatus } from '../../../common/helpers/enum';
+import { TaskGateway } from '../gateway/task.gateway';
 
 const mocks = {
   task: {
@@ -94,6 +95,14 @@ describe('TaskService', () => {
             findOne: jest.fn().mockResolvedValue(mocks.task),
             update: jest.fn().mockResolvedValue(mocks.updateResult),
             softDelete: jest.fn().mockResolvedValue(mocks.updateResult),
+          },
+        },
+        {
+          provide: TaskGateway,
+          useValue: {
+            handleCreateTask: jest.fn(),
+            handleUpdateTask: jest.fn(),
+            handleDeleteTask: jest.fn(),
           },
         },
       ],

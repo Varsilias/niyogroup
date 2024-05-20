@@ -2,8 +2,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
 import { UserService } from '../user/service/user.service';
-import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '../../../config/config.service';
 import { ConflictException } from '../../../common/exceptions/conflict.exception';
 import { SignInDto, SignUpDto } from '../dtos';
 import { ServerErrorException } from '../../../common/exceptions/server-error.exception';
@@ -11,6 +9,7 @@ import { BadRequestException } from '../../../common/exceptions/bad-request.exce
 import { UserEntity } from '../user/entities/user.entity';
 import { NotFoundException } from '../../../common/exceptions/notfound.exception';
 import * as utils from '../../../common/utils';
+import { TokenService } from './token.service';
 
 const mocks = {
   user: {
@@ -39,8 +38,7 @@ jest.mock('../../../common/utils');
 
 describe('AuthService', () => {
   let service: AuthService;
-  let jwtService: JwtService;
-  let configService: ConfigService;
+  let tokenService: TokenService;
   let userService: UserService;
 
   beforeEach(async () => {
@@ -55,28 +53,25 @@ describe('AuthService', () => {
           },
         },
         {
-          provide: JwtService,
+          provide: TokenService,
           useValue: {
-            signAsync: jest.fn().mockResolvedValue(mocks.token.jwt),
-            verifyAsync: jest.fn().mockResolvedValue({
+            signAccessToken: jest.fn().mockResolvedValue(mocks.token.jwt),
+            signRefreshToken: jest.fn().mockResolvedValue(mocks.token.jwt),
+            verifyAccessToken: jest.fn().mockResolvedValue({
               email: mocks.user.email,
               sub: mocks.user.publicId,
             }),
-          },
-        },
-        {
-          provide: ConfigService,
-          useValue: {
-            JWT_REFRESH_TOKEN_SECRET: mocks.token.refresh.secret,
-            JWT_REFRESH_TOKEN_EXPIRY: mocks.token.refresh.expiry,
+            verifyRefreshToken: jest.fn().mockResolvedValue({
+              email: mocks.user.email,
+              sub: mocks.user.publicId,
+            }),
           },
         },
       ],
     }).compile();
 
     service = module.get<AuthService>(AuthService);
-    jwtService = module.get<JwtService>(JwtService);
-    configService = module.get<ConfigService>(ConfigService);
+    tokenService = module.get<TokenService>(TokenService);
     userService = module.get<UserService>(UserService);
   });
 

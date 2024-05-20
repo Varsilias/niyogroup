@@ -7,10 +7,11 @@ import { comparePassword, hashPassword } from '../../../common/utils';
 import { ServerErrorException } from '../../../common/exceptions/server-error.exception';
 import { SignInDto } from '../dtos/sign-in.dto';
 import { BadRequestException } from '../../../common/exceptions/bad-request.exception';
-import { JwtService, JsonWebTokenError, TokenExpiredError } from '@nestjs/jwt';
-import { ConfigService } from '../../../config/config.service';
+import { JsonWebTokenError, TokenExpiredError } from '@nestjs/jwt';
 import { NotFoundException } from '../../../common/exceptions/notfound.exception';
 import { RefreshTokenDto } from '../dtos/refresh-token.dto';
+import { TokenService } from './token.service';
+import { WsException } from '@nestjs/websockets';
 
 @Injectable()
 export class AuthService {
@@ -18,8 +19,7 @@ export class AuthService {
 
   constructor(
     private readonly userService: UserService,
-    private readonly jwtService: JwtService,
-    private readonly configService: ConfigService,
+    private readonly tokenService: TokenService,
   ) {}
   async signUp(signUpDto: SignUpDto) {
     const { email, password } = signUpDto;
@@ -82,11 +82,8 @@ export class AuthService {
       email: user.email,
     };
 
-    const accessToken = await this.jwtService.signAsync(payload);
-    const refreshToken = await this.jwtService.signAsync(payload, {
-      secret: this.configService.JWT_REFRESH_TOKEN_SECRET,
-      expiresIn: `${this.configService.JWT_REFRESH_TOKEN_EXPIRY}d`,
-    });
+    const accessToken = await this.tokenService.signAccessToken(payload);
+    const refreshToken = await this.tokenService.signRefreshToken(payload);
 
     return {
       access_token: accessToken,
@@ -99,9 +96,8 @@ export class AuthService {
     const { refresh_token } = refreshTokenDto;
 
     try {
-      const { sub, email } = await this.jwtService.verifyAsync(refresh_token, {
-        secret: this.configService.JWT_REFRESH_TOKEN_SECRET,
-      });
+      const { sub, email } =
+        await this.tokenService.verifyRefreshToken(refresh_token);
 
       const user = await this.userService.findUserBy({ email, publicId: sub });
 
@@ -120,11 +116,8 @@ export class AuthService {
         email: user.email,
       };
 
-      const accessToken = await this.jwtService.signAsync(payload);
-      const refreshToken = await this.jwtService.signAsync(payload, {
-        secret: this.configService.JWT_REFRESH_TOKEN_SECRET,
-        expiresIn: `${this.configService.JWT_REFRESH_TOKEN_EXPIRY}d`,
-      });
+      const accessToken = await this.tokenService.signAccessToken(payload);
+      const refreshToken = await this.tokenService.signRefreshToken(payload);
 
       return {
         access_token: accessToken,
@@ -152,6 +145,48 @@ export class AuthService {
       throw new ServerErrorException(
         error?.message ?? 'Something went wrong, we are fixing it',
         null,
+      );
+    }
+  }
+
+  async validateUser(access_token: string) {
+    try {
+      const { sub, email } =
+        await this.tokenService.verifyAccessToken(access_token);
+
+      const user = await this.userService.findUserBy({ email, publicId: sub });
+
+      if (user.deletedAt !== null) {
+        throw new NotFoundException(`User not found`, null);
+      }
+
+      if (user.isBlocked || user.blockedAt !== null) {
+        throw new BadRequestException(
+          'Your account has been blocked, please contact support',
+        );
+      }
+
+      return user;
+    } catch (error: any) {
+      this.logger.error(error);
+
+      if (error instanceof JsonWebTokenError) {
+        throw new WsException(error?.message ?? 'Invalid Token');
+      }
+
+      if (error instanceof TokenExpiredError) {
+        throw new WsException(error?.message ?? 'Token Expired');
+      }
+
+      if (
+        error instanceof NotFoundException ||
+        error instanceof BadRequestException
+      ) {
+        throw error;
+      }
+
+      throw new WsException(
+        error?.message ?? 'Something went wrong, we are fixing it',
       );
     }
   }
