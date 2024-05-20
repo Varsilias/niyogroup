@@ -42,14 +42,14 @@ export class TaskGateway implements OnModuleInit, OnGatewayInit {
   }
 
   /* handle realtime streaming of the update made to a task */
-  //   @SubscribeMessage('task/update')
+  @SubscribeMessage('task/update')
   handleUpdateTask(@MessageBody() data: TaskEntity) {
     delete data.user;
     this.server.emit(`task/update/${data.publicId}`, data);
   }
 
   /* handle realtime streaming of a deleted task */
-  //   @SubscribeMessage('task/delete')
+  @SubscribeMessage('task/delete')
   handleDeleteTask(
     @MessageBody()
     data: {

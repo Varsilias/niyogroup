@@ -56,7 +56,18 @@ This project provides up to four commands to use in generating and running migra
 
 #### WebSocket Setup
 
-1. Run the command `npm run start:socket` to start the test websocket client
+1. Run the command `npm run start:socket` to start the test websocket client, it is a simple HTML page that showcases the working of the websocket
 
 When a new task is created on the server, an event `task/new` is emitted to the client which it listens to, the event is emitted alongside the newly created task.
+
+You need to login with the right credentials to establish initial socket connection to the server.
+
 The new task is automatically appended to the html page alongside previously sent tasks. You can test this out by sending a **HTTP request** to create a new task from any **HTTP Client** of your choice **E.G Postman** go back to the HTML page rendered when you ran the command in **step 1** and you will see the new task appended to the page in real-time
+
+**Supported Events**
+
+- `task/new` - Server emits this when a new task is created
+- `task/update/<task_public_id>` - Server emits this when the task with publicId **task_public_id** is updated
+- `task/delete/<task_public_id>` - Server emits this when the task with publicId **task_public_id** is deleted
+
+**NB:** `<task_public_id>` is a placeholder
